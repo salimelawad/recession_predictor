@@ -26,18 +26,21 @@ r = pd.read_csv('USREC.csv', index_col='DATE')
 data = pd.concat([a, b, c, d, r], axis=1)
 data.index = pd.to_datetime(data.index)
 
-data['future_rec'] = data['USREC'].shift(-4).iloc[::-1].rolling(6, min_periods=0).sum().iloc[::-1]
+data['T1YFFM_1'] = data['T1YFFM'].shift(1)
+data['T5YFFM_1'] = data['T5YFFM'].shift(1)
+data['T10YFFM_1'] = data['T10YFFM'].shift(1)
+data['TB3SMFFM_1'] = data['TB3SMFFM'].shift(1)
 
-for i in range(24):
-    shift = i + 1
-    data['USREC_shift_'+str(shift)] = data['USREC'].shift(shift * -1)
-    
+data['T1YFFM_2'] = data['T1YFFM'].shift(2)
+data['T5YFFM_2'] = data['T5YFFM'].shift(2)
+data['T10YFFM_2'] = data['T10YFFM'].shift(2)
+data['TB3SMFFM_2'] = data['TB3SMFFM'].shift(2)
+
+#Create all target variables
+for i in range(18):
+    data['future_rec_6m_{}'.format(str(i))] = data['USREC'].shift(-1*i).iloc[::-1].rolling(6, min_periods=0).sum().iloc[::-1]
+
 data = data.fillna(0)
-### Split target
-feature_col = ['TB3SMFFM', 'T1YFFM', 'T5YFFM', 'T10YFFM']
-target_col = 'future_rec'
-
-
 
 
 
@@ -58,42 +61,52 @@ def bad_model_test(data, date_filter, feature_cols, target_col, graph=False):
     scaler_target.fit(target)
     scaled_target = np.ravel(scaler_target.transform(target))
     
-    regr = MLPRegressor(hidden_layer_sizes= (100, 100, 100))
+    regr = MLPRegressor(hidden_layer_sizes= (10, 10, 10))
     model = regr.fit(scaled_features, scaled_target)
     predictions = model.predict(scaled_features)
-    data_filtered['preds'] = predictions
-    print(mse(data_filtered['preds'], scaled_target))
+    print(mse(predictions, scaled_target))
     if graph:
 #        graph_results(data_filtered[['preds', target_col]])
-        graph_
+        graph_results(data_filtered.index, 
+                      np.ravel(scaler_target.inverse_transform([predictions])), 
+                      np.ravel(scaler_target.inverse_transform([scaled_target]))
+                      )
 
-def graph_results(data):
-    fig, ax = plt.subplots(figsize=(15,8)) 
+def graph_results(index, predictions, scaled_target):
+    fig, ax = plt.subplots(figsize=(25,12)) 
     #myFmt = mdates.DateFormatter("%y-%m")
     #ax.xaxis.set_major_formatter(myFmt)
     ax.xaxis.set_major_locator(mdates.MonthLocator(interval=12))
     ax.set_title('Preds', size= 30)
 #    wide_df = data[['preds', target_col]]
-    ax = lineplot(data=data)
+    wide_df = pd.DataFrame(index=index)
+    wide_df['predictions'] = predictions
+    wide_df['target'] = scaled_target
+    ax = lineplot(data=wide_df)
     plt.xlabel('Year', size=20)
-    plt.ylabel(target_col, size=20)
+    plt.ylabel('# of future months in recession', size=20)
     plt.xticks(rotation=45)
     plt.grid(which='major');
 
 
-#test all months
-for i in range(24):
-    print('month {}'.format(i+1))
-    bad_model_test(data, 
-                   '2016-01-01', 
-                   ['TB3SMFFM', 'T1YFFM', 'T5YFFM', 'T10YFFM'], 
-                   'USREC_shift_'+str(i+1)
-                   )
-    
+##test all months
+#for i in range(18):
+#    print('month {}: '.format(i), end='')
+#    bad_model_test(data, 
+#                   '2016-01-01', 
+#                   ['TB3SMFFM', 'T1YFFM', 'T5YFFM', 'T10YFFM', 
+#                    'TB3SMFFM_1', 'T1YFFM_1', 'T5YFFM_1', 'T10YFFM_1',
+#                    'TB3SMFFM_2', 'T1YFFM_2', 'T5YFFM_2', 'T10YFFM_2'], 
+#                   'future_rec_6m_{}'.format(str(i))
+#                   )
+#    
 
 bad_model_test(data, 
+    
                '2020-01-01', 
-               ['TB3SMFFM', 'T1YFFM', 'T5YFFM', 'T10YFFM'], 
-               'future_rec',
+               ['TB3SMFFM', 'T1YFFM', 'T5YFFM', 'T10YFFM', 
+                'TB3SMFFM_1', 'T1YFFM_1', 'T5YFFM_1', 'T10YFFM_1',
+                'TB3SMFFM_2', 'T1YFFM_2', 'T5YFFM_2', 'T10YFFM_2'], 
+               'future_rec_6m_8',
                graph=True
                )
