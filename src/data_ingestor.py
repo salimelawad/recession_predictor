@@ -37,7 +37,7 @@ def load_recession(api_key):
 
 
 # print(load_monthly(api_key))
-print(load_daily(api_key))
+# print(load_daily(api_key))
 # print(load_recession(api_key))
 
 
