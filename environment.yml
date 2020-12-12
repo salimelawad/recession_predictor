@@ -1,0 +1,40 @@
+name: py37
+channels:
+  - conda-forge
+  - anaconda-fusion
+  - defaults
+dependencies:
+  - brotlipy=0.7.0=py37h0013d47_1001
+  - ca-certificates=2020.12.5=h5b45459_0
+  - certifi=2020.12.5=py37h03978a9_0
+  - cffi=1.14.4=py37hd8e9650_1
+  - chardet=3.0.4=py37hf50a25e_1008
+  - cryptography=3.3.1=py37hd8e9650_0
+  - idna=2.10=pyh9f0ad1d_0
+  - intel-openmp=2020.3=h57928b3_311
+  - libblas=3.8.0=21_mkl
+  - libcblas=3.8.0=21_mkl
+  - liblapack=3.8.0=21_mkl
+  - mkl=2020.4=hb70f87d_311
+  - numpy=1.18.4=py37hae9e721_0
+  - openssl=1.1.1i=h8ffe710_0
+  - pandas=1.1.5=py37h08fd248_0
+  - pip=20.3.1=pyhd8ed1ab_0
+  - pycparser=2.20=pyh9f0ad1d_2
+  - pyopenssl=20.0.0=pyhd8ed1ab_0
+  - pysocks=1.7.1=py37hf50a25e_2
+  - python=3.7.9=h7840368_0_cpython
+  - python-dateutil=2.8.1=py_0
+  - python_abi=3.7=1_cp37m
+  - pytz=2020.4=pyhd8ed1ab_0
+  - requests=2.25.0=pyhd3deb0d_0
+  - setuptools=49.6.0=py37hf50a25e_2
+  - six=1.15.0=pyh9f0ad1d_0
+  - sqlite=3.34.0=h8ffe710_0
+  - urllib3=1.25.11=py_0
+  - vc=14.1=h869be7e_1
+  - vs2015_runtime=14.16.27012=h30e32a0_2
+  - wheel=0.36.1=pyhd3deb0d_0
+  - win_inet_pton=1.1.0=py37hc8dfbb8_1
+  - wincertstore=0.2=py37hc8dfbb8_1005
+prefix: C:\Users\elawa\anaconda3\envs\py37

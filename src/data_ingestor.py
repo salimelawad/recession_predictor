@@ -36,9 +36,9 @@ def load_recession(api_key):
     return get_series_request('USREC', api_key)
 
 
-# print(load_monthly(api_key))
-# print(load_daily(api_key))
-# print(load_recession(api_key))
+print(load_monthly(api_key))
+print(load_daily(api_key))
+print(load_recession(api_key))
 
 
 
