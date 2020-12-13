@@ -2,6 +2,8 @@ import requests
 import pandas as pd
 import time
 
+from utils import write_csv
+
 api_key = '6dcd215d39286437b67f6389b88903e0'
 
 def get_series_request(series, api_key):
@@ -36,9 +38,8 @@ def load_recession(api_key):
     return get_series_request('USREC', api_key)
 
 
-print(load_monthly(api_key))
-print(load_daily(api_key))
-print(load_recession(api_key))
-
+write_csv(load_monthly(api_key), "recessionml.appspot.com", "monthly_treasury_rates.csv")
+write_csv(load_daily(api_key), "recessionml.appspot.com", "daily_treasury_rates.csv")
+write_csv(load_recession(api_key), "recessionml.appspot.com", "recession_months.csv")
 
 
